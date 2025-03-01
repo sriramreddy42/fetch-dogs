@@ -3,8 +3,6 @@ import { getLocations, getBreeds, searchDogs } from "../services/api";
 import DogList from "../components/DogList";
 import FavoriteDogs from "../components/FavoriteDogs";
 import { debounce } from "lodash";
-import { SelectChangeEvent } from "@mui/material";
-
 import {
   Container,
   Select,
@@ -18,19 +16,13 @@ import {
   AppBar,
   Toolbar,
   Stack,
-  Paper,
 } from "@mui/material";
-import GitHubIcon from "@mui/icons-material/GitHub";
-import LinkedInIcon from "@mui/icons-material/LinkedIn";
-import EmailIcon from "@mui/icons-material/Email";
-
 const SearchPage: React.FC = () => {
   const [breeds, setBreeds] = useState<string[]>([]);
   const [selectedBreed, setSelectedBreed] = useState<string>("");
   const [name, setName] = useState<string>("");
-  const [zipCodes, setZipCodes] = useState<string[]>([]);
+  const [zipCode, setZipCode] = useState<string>(""); // Single string instead of an array
   const [selectedZipCode, setSelectedZipCode] = useState<string>("");
-  const [searchQuery, setSearchQuery] = useState<string>("");
   const [ageMin, setAgeMin] = useState<number | "">("");
   const [ageMax, setAgeMax] = useState<number | "">("");
   const [dogs, setDogs] = useState<string[]>([]);
@@ -43,13 +35,37 @@ const SearchPage: React.FC = () => {
     if (value.trim()) {
       // Reset all filters when searching by name
       setSelectedBreed("");
-      setSelectedZipCode("");
+      setZipCode("");
       setAgeMin("");
       setAgeMax("");
     }
 
     handleSearch();
   }, 500);
+
+  const handleMinAgeChange = (
+    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
+  ) => {
+    const newMinAge = e.target.value ? Number(e.target.value) : "";
+
+    if (newMinAge !== "" && ageMax !== "" && newMinAge > ageMax) {
+      setAgeMax(newMinAge);
+    }
+
+    setAgeMin(newMinAge);
+  };
+
+  const handleMaxAgeChange = (
+    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
+  ) => {
+    const newMaxAge = e.target.value ? Number(e.target.value) : "";
+
+    if (newMaxAge !== "" && ageMin !== "" && newMaxAge < ageMin) {
+      setAgeMin(newMaxAge);
+    }
+
+    setAgeMax(newMaxAge);
+  };
 
   // Fetch available breeds on mount
   useEffect(() => {
@@ -64,23 +80,11 @@ const SearchPage: React.FC = () => {
     fetchBreeds();
   }, []);
 
-  useEffect(() => {
-    async function fetchLocations() {
-      try {
-        const locationList = await getLocations();
-        setZipCodes(locationList);
-      } catch (error) {
-        console.error("Error fetching Locations:", error);
-      }
-    }
-    fetchLocations();
-  }, []);
-
   // Fetch dogs based on filters
   const handleSearch = async () => {
     const filters: any = {
-      size: 10,
-      from: page * 10,
+      size: 25,
+      from: page * 25,
       sort: `breed:${sortOrder}`,
     };
     if (name.trim()) {
@@ -88,18 +92,24 @@ const SearchPage: React.FC = () => {
       filters.name = name.toLowerCase();
     } else {
       if (selectedBreed) filters.breeds = [selectedBreed];
-      // if (searchQuery) filters.name = searchQuery;
-      if (selectedZipCode) filters.zipCodes = [selectedZipCode];
+      if (zipCode.trim()) filters.zipCodes = [zipCode]; // Convert string to array
       if (ageMin) filters.ageMin = ageMin;
       if (ageMax) filters.ageMax = ageMax;
     }
 
     try {
       const results = await searchDogs(filters);
-      setDogs(results.resultIds);
+
+      if (results.resultIds.length === 0) {
+        setDogs([]); // No results found
+      } else {
+        setDogs(results.resultIds);
+      }
+
       setTotal(results.total);
     } catch (error) {
       console.error("Error fetching dogs:", error);
+      setDogs([]); // Handle API error by clearing the list
     }
   };
 
@@ -182,23 +192,19 @@ const SearchPage: React.FC = () => {
 
             {/* Filter by Zip Code (Dynamically Updated) */}
             <FormControl sx={{ width: "450px" }} size="small">
-              <InputLabel>Zip Code</InputLabel>
-              <Select
-                value={selectedZipCode}
+              {/* Name Filters with Fixed Width */}
+              <TextField
+                label="Search by Zip Code"
+                type="text"
+                variant="outlined"
+                size="small"
+                value={zipCode} // Bind value to the single string state
                 onChange={(e) => {
-                  setSelectedZipCode(e.target.value);
-                  setName(""); // Reset name when zip code is selected
-                  handleSearch();
-                }}
-                label="Zip Code"
-              >
-                <MenuItem value="">All Zip Codes</MenuItem>
-                {zipCodes.map((zip) => (
-                  <MenuItem key={zip} value={zip}>
-                    {zip}
-                  </MenuItem>
-                ))}
-              </Select>
+                  setZipCode(e.target.value);
+                  setName("");
+                }} // Update state correctly
+                sx={{ width: "150px" }}
+              />
             </FormControl>
 
             {/* Age Filters with Fixed Width */}
@@ -209,9 +215,9 @@ const SearchPage: React.FC = () => {
               size="small"
               value={ageMin}
               onChange={(e) => {
-                setAgeMin(e.target.value ? Number(e.target.value) : "");
+                handleMinAgeChange(e); // Call function properly with event argument
                 setName(""); // Reset name when age filter is used
-                handleSearch();
+                handleSearch(); // Trigger search
               }}
               sx={{ width: "450px" }} // Fixed width
             />
@@ -222,9 +228,9 @@ const SearchPage: React.FC = () => {
               size="small"
               value={ageMax}
               onChange={(e) => {
-                setAgeMax(e.target.value ? Number(e.target.value) : "");
+                handleMaxAgeChange(e); // Fix function call
                 setName(""); // Reset name when age filter is used
-                handleSearch();
+                handleSearch(); // Trigger search with updated age filter
               }}
               sx={{ width: "450px" }} // Fixed width
             />

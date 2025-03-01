@@ -25,11 +25,13 @@ const DogList: React.FC<{ dogIds: string[]; searchName?: string }> = ({
 }) => {
   const [dogs, setDogs] = useState<Dog[]>([]);
   const { favorites, toggleFavorite } = useFavorites();
+  const [, setLoading] = useState<boolean>(true);
 
   useEffect(() => {
     async function getDogs() {
+      setLoading(true);
       if (dogIds.length > 0) {
-        const dogData: Dog[] = await fetchDogs(dogIds); // Explicitly define type
+        const dogData: Dog[] = await fetchDogs(dogIds);
 
         // Apply manual filtering for substring match if searchName exists
         let filteredDogs = dogData;
@@ -41,7 +43,10 @@ const DogList: React.FC<{ dogIds: string[]; searchName?: string }> = ({
         }
 
         setDogs(filteredDogs);
+      } else {
+        setDogs([]);
       }
+      setLoading(false);
     }
     getDogs();
   }, [dogIds, searchName]);
@@ -52,67 +57,81 @@ const DogList: React.FC<{ dogIds: string[]; searchName?: string }> = ({
         display: "flex",
         flexWrap: "wrap",
         justifyContent: "center",
-        gap: 3, // Adds spacing between cards
+        gap: 3,
         mt: 4,
       }}
     >
-      {dogs.map((dog) => (
-        <Box
-          key={dog.id}
-          sx={{
-            width: { xs: "100%", sm: "48%" }, // Full width on mobile, 2 items per row on larger screens
-            maxWidth: "350px",
-          }}
+      {dogs.length === 0 ? (
+        <Typography
+          variant="h6"
+          textAlign="center"
+          sx={{ width: "100%", color: "red", fontWeight: "bold" }}
         >
-          <Card
+          No dogs found. Try adjusting your filters! 🐶
+        </Typography>
+      ) : (
+        dogs.map((dog) => (
+          <Box
+            key={dog.id}
             sx={{
-              textAlign: "center",
-              p: 2,
-              borderRadius: "16px",
-              boxShadow: 3,
-              height: "100%", // Ensures all cards have the same height
+              width: { xs: "100%", sm: "48%" },
+              maxWidth: "350px",
             }}
           >
-            {/* Fixed Image Size */}
-            <CardMedia
-              component="img"
-              image={dog.img}
-              alt={dog.name}
+            <Card
               sx={{
-                width: "100%",
-                height: "250px",
-                objectFit: "cover",
-                borderRadius: "8px",
+                textAlign: "center",
+                p: 2,
+                borderRadius: "16px",
+                boxShadow: 3,
+                height: "100%",
               }}
-            />
-            <CardContent>
-              <Typography variant="h6" fontWeight="bold">
-                {dog.name}
-              </Typography>
-              <Typography variant="body2">Breed: {dog.breed}</Typography>
-              <Typography variant="body2">Age: {dog.age}</Typography>
-              <Typography variant="body2">Location: {dog.zip_code}</Typography>
-              <Button
-                onClick={() => toggleFavorite(dog.id)}
-                variant="contained"
+            >
+              {/* Fixed Image Size */}
+              <CardMedia
+                component="img"
+                image={dog.img}
+                alt={dog.name}
                 sx={{
-                  mt: 2,
+                  width: "100%",
+                  height: "250px",
+                  objectFit: "cover",
                   borderRadius: "8px",
-                  backgroundColor: favorites.includes(dog.id) ? "red" : "gray",
-                  color: "white",
-                  "&:hover": {
-                    backgroundColor: favorites.includes(dog.id)
-                      ? "darkred"
-                      : "darkgray",
-                  },
                 }}
-              >
-                {favorites.includes(dog.id) ? "Unfavorite" : "Favorite"}
-              </Button>
-            </CardContent>
-          </Card>
-        </Box>
-      ))}
+              />
+              <CardContent>
+                <Typography variant="h6" fontWeight="bold">
+                  {dog.name}
+                </Typography>
+                <Typography variant="body2">Breed: {dog.breed}</Typography>
+                <Typography variant="body2">Age: {dog.age}</Typography>
+                <Typography variant="body2">
+                  Location: {dog.zip_code}
+                </Typography>
+                <Button
+                  onClick={() => toggleFavorite(dog.id)}
+                  variant="contained"
+                  sx={{
+                    mt: 2,
+                    borderRadius: "8px",
+                    backgroundColor: favorites.includes(dog.id)
+                      ? "error.main"
+                      : "primary.main",
+                    color: "white",
+                    "&:hover": {
+                      backgroundColor: favorites.includes(dog.id)
+                        ? "error.dark"
+                        : "primary.dark",
+                    },
+                  }}
+                >
+                  {favorites.includes(dog.id) ? "Unfavorite" : "Favorite"}
+                </Button>
+              </CardContent>
+            </Card>
+          </Box>
+        ))
+      )}
     </Box>
   );
 };

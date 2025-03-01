@@ -81,9 +81,9 @@ const Match: React.FC = () => {
           </Paper>
         </Toolbar>
       </AppBar>
-      {/* ✅ Prevent Overlapping by Adding Margin to Content */}
+      {/* Prevent Overlapping by Adding Margin to Content */}
       <Box sx={{ mt: 12, p: 3 }}>
-        {/* ✅ Favorite Dogs Section */}
+        {/*  Favorite Dogs Section */}
         <Paper elevation={3} sx={{ p: 4, mt: 4, borderRadius: 3 }}>
           <Typography variant="h5" fontWeight="bold">
             Find Your Perfect Match! 🐶
