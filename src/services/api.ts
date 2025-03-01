@@ -20,14 +20,15 @@ export const logout = async () => {
     return apiClient.post("/auth/logout");
 };
 
-// Get available breeds
+// Get available breeds (ok)
 export const getBreeds = async () => {
     const response = await apiClient.get<string[]>("/dogs/breeds");
     return response.data;
 };
 // Get available breeds
 export const getLocations = async () => {
-    const response = await apiClient.get<string[]>("/dogs/zipCodes");
+    const response = await apiClient.get<string[]>("/locations/zip_codes");
+    console.log(response);
     return response.data;
 };
 

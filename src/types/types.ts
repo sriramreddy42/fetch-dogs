@@ -3,6 +3,6 @@ export interface Dog {
     img: string;
     name: string;
     age: number;
-    Location: string;
+    zipCodes: string;
     breed: string;
 }
