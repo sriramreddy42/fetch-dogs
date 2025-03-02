@@ -1,8 +1,8 @@
 {
+  "homepage": "https://sriramreddy42.github.io/fetch-dogs",
   "name": "fetch-dogs",
   "private": true,
   "version": "0.0.0",
-  "homepage": "https://sriramreddy42.github.io/fetch-dogs",
   "type": "module",
   "scripts": {
     "dev": "vite",
