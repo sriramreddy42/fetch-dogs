@@ -109,6 +109,4 @@ Edit
 📧 Email: sbandari@careerattainment.com
 🔗 GitHub: https://github.com/sriramreddy42
 
-💡 Feel free to contribute! Fork the repo and submit a PR.
-
 ```
