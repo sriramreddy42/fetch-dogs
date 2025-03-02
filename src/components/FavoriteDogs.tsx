@@ -13,7 +13,7 @@ const FavoriteDogs: React.FC = () => {
   };
 
   return (
-    <Paper elevation={-1} sx={{ p: 0.5, mt: 2, borderRadius: 1 }}>
+    <Paper elevation={1} sx={{ p: 0.5, mt: 2, borderRadius: 1 }}>
       <Typography variant="h5" fontWeight="bold" align="center">
         Your Favorite Dogs
       </Typography>

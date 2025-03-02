@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { useFavorites } from "../context/FavoritesContext";
 import { fetchDogs, matchDogs } from "../services/api";
+import Footer from "../components/Footer";
 import { useNavigate } from "react-router-dom";
 import {
   Box,
@@ -125,6 +126,7 @@ const Match: React.FC = () => {
           )}
         </Paper>
       </Box>
+      <Footer />
     </>
   );
 };

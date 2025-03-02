@@ -1,7 +1,8 @@
 import React, { useEffect, useState } from "react";
-import { getLocations, getBreeds, searchDogs } from "../services/api";
+import { getBreeds, searchDogs } from "../services/api";
 import DogList from "../components/DogList";
 import FavoriteDogs from "../components/FavoriteDogs";
+import Footer from "../components/Footer";
 import { debounce } from "lodash";
 import {
   Container,
@@ -16,6 +17,8 @@ import {
   AppBar,
   Toolbar,
   Stack,
+  Pagination,
+  CircularProgress,
 } from "@mui/material";
 const SearchPage: React.FC = () => {
   const [breeds, setBreeds] = useState<string[]>([]);
@@ -29,6 +32,8 @@ const SearchPage: React.FC = () => {
   const [page, setPage] = useState(0);
   const [total, setTotal] = useState(0);
   const [sortOrder, setSortOrder] = useState<"asc" | "desc">("asc");
+  const [loading, setLoading] = useState(false);
+
   const handleNameChange = debounce((value: string) => {
     setName(value);
 
@@ -82,6 +87,7 @@ const SearchPage: React.FC = () => {
 
   // Fetch dogs based on filters
   const handleSearch = async () => {
+    setLoading(true);
     const filters: any = {
       size: 25,
       from: page * 25,
@@ -110,6 +116,8 @@ const SearchPage: React.FC = () => {
     } catch (error) {
       console.error("Error fetching dogs:", error);
       setDogs([]); // Handle API error by clearing the list
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -213,6 +221,7 @@ const SearchPage: React.FC = () => {
               type="number"
               variant="outlined"
               size="small"
+              inputProps={{ min: 1 }}
               value={ageMin}
               onChange={(e) => {
                 handleMinAgeChange(e); // Call function properly with event argument
@@ -226,6 +235,7 @@ const SearchPage: React.FC = () => {
               type="number"
               variant="outlined"
               size="small"
+              inputProps={{ min: 1 }}
               value={ageMax}
               onChange={(e) => {
                 handleMaxAgeChange(e); // Fix function call
@@ -257,25 +267,24 @@ const SearchPage: React.FC = () => {
           </Stack>
         </Box>
         {/* Dog List */}
-        <DogList dogIds={dogs} searchName={name} />
+        {loading ? (
+          <Box sx={{ display: "flex", justifyContent: "center", mt: 5 }}>
+            <CircularProgress />
+          </Box>
+        ) : (
+          <DogList dogIds={dogs} searchName={name} />
+        )}
         {/* Pagination */}
         <Stack direction="row" justifyContent="center" mt={8} spacing={20}>
-          <Button
-            disabled={page === 0}
-            onClick={() => setPage(page - 1)}
-            variant="contained"
-          >
-            Previous
-          </Button>
-          <Button
-            disabled={dogs.length === 0}
-            onClick={() => setPage(page + 1)}
-            variant="contained"
-          >
-            Next
-          </Button>
+          <Pagination
+            count={Math.ceil(total / 25)}
+            page={page}
+            onChange={(event, value) => setPage(value)}
+            color="primary"
+          />
         </Stack>
       </Container>
+      <Footer />
     </>
   );
 };

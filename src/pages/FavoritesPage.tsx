@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { useFavorites } from "../context/FavoritesContext";
 import { fetchDogs } from "../services/api";
+import Footer from "../components/Footer";
 import { useNavigate } from "react-router-dom";
 import {
   Box,
@@ -27,7 +28,6 @@ const Favorites: React.FC = () => {
   const { favorites, clearFavorites } = useFavorites();
   const [dogs, setDogs] = useState<Dog[]>([]);
   const navigate = useNavigate();
-
   useEffect(() => {
     const loadFavorites = async () => {
       if (favorites.length > 0) {
@@ -154,6 +154,7 @@ const Favorites: React.FC = () => {
           )}
         </Paper>
       </Box>
+      <Footer />
     </>
   );
 };

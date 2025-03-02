@@ -3,6 +3,7 @@ import LoginPage from "./pages/LoginPage";
 import SearchPage from "./pages/SearchPage";
 import Favorites from "./pages/FavoritesPage";
 import Match from "./pages/MatchPage";
+import { JSX } from "react";
 
 // Protect pages that require authentication
 const PrivateRoute = ({ element }: { element: JSX.Element }) => {
