@@ -4,16 +4,12 @@
   "version": "0.0.0",
   "homepage": "https://sriramreddy42.github.io/fetch-dogs",
   "type": "module",
- "scripts": {
-  "dev": "vite",
-  "build": "vite build",
-  "lint": "eslint .",
-  "preview": "vite preview",
-  "predeploy": "npm run build",
-  "deploy": "gh-pages -d dist"
-},
-
-
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build",
+    "predeploy": "npm run build",
+    "deploy": "gh-pages -d dist -r https://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@github.com/sriramreddy42/fetch-dogs.git"
+  },
   "dependencies": {
     "@emotion/react": "^11.14.0",
     "@emotion/styled": "^11.14.0",

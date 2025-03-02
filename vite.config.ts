@@ -2,12 +2,11 @@ import { defineConfig } from 'vite';
 import react from '@vitejs/plugin-react';
 
 export default defineConfig({
-  base: '/fetch-dogs/',  // 👈 Change this to match your GitHub repo name
+  base: '/fetch-dogs/', // 👈 Ensure this matches your GitHub repository name
   plugins: [react()],
   build: {
-    outDir: 'dist',
+    outDir: 'dist', // ✅ Ensures correct output folder
     rollupOptions: {
-      input: 'src/main.tsx',  // 👈 Set correct entry point
       output: {
         manualChunks(id) {
           if (id.includes('node_modules')) {
@@ -16,7 +15,7 @@ export default defineConfig({
         }
       }
     },
-    chunkSizeWarningLimit: 1000,
+    chunkSizeWarningLimit: 1000, // ✅ Adjusts the chunk size warning limit
   },
   server: {
     open: true,
