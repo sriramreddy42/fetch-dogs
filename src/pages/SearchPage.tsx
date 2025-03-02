@@ -25,7 +25,6 @@ const SearchPage: React.FC = () => {
   const [selectedBreed, setSelectedBreed] = useState<string>("");
   const [name, setName] = useState<string>("");
   const [zipCode, setZipCode] = useState<string>(""); // Single string instead of an array
-  const [selectedZipCode, setSelectedZipCode] = useState<string>("");
   const [ageMin, setAgeMin] = useState<number | "">("");
   const [ageMax, setAgeMax] = useState<number | "">("");
   const [dogs, setDogs] = useState<string[]>([]);
@@ -279,7 +278,7 @@ const SearchPage: React.FC = () => {
           <Pagination
             count={Math.ceil(total / 25)}
             page={page}
-            onChange={(event, value) => setPage(value)}
+            onChange={(_event, value) => setPage(value)}
             color="primary"
           />
         </Stack>
