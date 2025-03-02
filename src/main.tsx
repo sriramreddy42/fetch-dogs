@@ -7,7 +7,7 @@ import "./styles/global.css"; // tailwind css
 
 ReactDOM.createRoot(document.getElementById("root")!).render(
   <React.StrictMode>
-    <BrowserRouter>
+    <BrowserRouter basename="/fetch-dogs">
       <FavoritesProvider>
         <AppRoutes />
       </FavoritesProvider>
