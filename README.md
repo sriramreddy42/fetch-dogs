@@ -1,50 +1,114 @@
-# React + TypeScript + Vite
+# 🐶 Fetch Dogs - Adopt Your New Best Friend!
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+Welcome to **Fetch Dogs**, a web application that helps dog lovers find and adopt shelter dogs! This project allows users to search for available dogs based on breed, location, and age.
 
-Currently, two official plugins are available:
+## 🚀 Features
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+✅ **User Authentication** - Login with Name & Email  
+✅ **Search for Dogs** - Filter by Breed, Age, and Zip Code  
+✅ **Pagination & Sorting** - Browse large datasets efficiently  
+✅ **Favorite Dogs** - Select and save favorite dogs  
+✅ **Find My Match** - Get matched with a dog based on preferences  
+✅ **Responsive UI** - Fully optimized for desktop and mobile  
+✅ **Fast & Scalable** - Uses **React, Material-UI, and TypeScript**
 
-## Expanding the ESLint configuration
+---
 
-If you are developing a production application, we recommend updating the configuration to enable type aware lint rules:
+## 🛠️ Technologies Used
 
-- Configure the top-level `parserOptions` property like this:
+- **Frontend:** React, TypeScript, Material-UI
+- **State Management:** React Hooks, Context API
+- **Backend API:** Fetch API
+- **Styling:** Material-UI, Flexbox, CSS Grid
+- **Deployment:** Vercel / Netlify
 
-```js
-export default tseslint.config({
-  languageOptions: {
-    // other options...
-    parserOptions: {
-      project: ['./tsconfig.node.json', './tsconfig.app.json'],
-      tsconfigRootDir: import.meta.dirname,
-    },
-  },
-})
-```
+---
 
-- Replace `tseslint.configs.recommended` to `tseslint.configs.recommendedTypeChecked` or `tseslint.configs.strictTypeChecked`
-- Optionally add `...tseslint.configs.stylisticTypeChecked`
-- Install [eslint-plugin-react](https://github.com/jsx-eslint/eslint-plugin-react) and update the config:
+## 🔧 Setup & Installation
 
-```js
-// eslint.config.js
-import react from 'eslint-plugin-react'
+### 1️⃣ **Clone the Repository**
 
-export default tseslint.config({
-  // Set the react version
-  settings: { react: { version: '18.3' } },
-  plugins: {
-    // Add the react plugin
-    react,
-  },
-  rules: {
-    // other rules...
-    // Enable its recommended rules
-    ...react.configs.recommended.rules,
-    ...react.configs['jsx-runtime'].rules,
-  },
-})
+```sh
+git clone https://github.com/yourusername/fetch-dogs.git
+cd fetch-dogs
+2️⃣ Install Dependencies
+sh
+Copy
+Edit
+npm install  # or yarn install
+3️⃣ Run the Development Server
+sh
+Copy
+Edit
+npm run dev  # or yarn dev
+🚀 The app will be available at http://localhost:5173 (if using Vite).
+
+🔑 Authentication
+Before using the API, users must log in to obtain an authentication cookie.
+
+Endpoint: POST /auth/login
+Body:
+json
+Copy
+Edit
+{
+  "name": "John Doe",
+  "email": "john@example.com"
+}
+Response: The server sets an authentication cookie (fetch-access-token).
+💡 Note: The cookie is HttpOnly, so it cannot be accessed in JavaScript. The browser automatically includes it in API requests.
+
+🐶 Searching for Dogs
+Endpoint: GET /dogs/search
+Query Parameters:
+breeds - Filter by dog breed
+zipCodes - Filter by location
+ageMin / ageMax - Set age range
+sort - Sort by breed, name, or age
+size - Number of results per page
+Example Request:
+
+sh
+Copy
+Edit
+GET /dogs/search?breeds=Golden%20Retriever&zipCodes=10001&ageMin=1&ageMax=5&sort=breed:asc&size=10
+Response:
+
+json
+Copy
+Edit
+{
+  "resultIds": ["dog123", "dog456"],
+  "total": 200,
+  "next": "...",
+  "prev": "..."
+}
+❤️ Favorite Dogs
+Users can favorite dogs and later generate a match.
+
+To fetch dog details:
+Endpoint: POST /dogs
+Body: ["dog123", "dog456"]
+
+To match with a dog:
+Endpoint: POST /dogs/match
+Body: ["dog123", "dog456", "dog789"]
+
+Response:
+
+json
+Copy
+Edit
+{
+  "match": "dog123"
+}
+✨ The API selects a random dog from the provided list.
+
+👨‍💻 Author
+[Sriram Reddy Bandari]
+📧 Email: sbandari@careerattainment.com
+🔗 GitHub: https://github.com/sriramreddy42
+
+💡 Feel free to contribute! Fork the repo and submit a PR.
+
 ```
