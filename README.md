@@ -19,8 +19,7 @@ Welcome to **Fetch Dogs**, a web application that helps dog lovers find and adop
 - **Frontend:** React, TypeScript, Material-UI
 - **State Management:** React Hooks, Context API
 - **Backend API:** Fetch API
-- **Styling:** Material-UI, Flexbox, CSS Grid
-- **Deployment:** Vercel / Netlify
+- **Styling:** Material-UI
 
 ---
 
@@ -29,7 +28,7 @@ Welcome to **Fetch Dogs**, a web application that helps dog lovers find and adop
 ### 1️⃣ **Clone the Repository**
 
 ```sh
-git clone https://github.com/yourusername/fetch-dogs.git
+git clone https://github.com/sriramreddy42@gmail.com/fetch-dogs.git
 cd fetch-dogs
 2️⃣ Install Dependencies
 sh
@@ -61,6 +60,7 @@ Response: The server sets an authentication cookie (fetch-access-token).
 🐶 Searching for Dogs
 Endpoint: GET /dogs/search
 Query Parameters:
+name - Search By Only With Dog Name
 breeds - Filter by dog breed
 zipCodes - Filter by location
 ageMin / ageMax - Set age range
