@@ -28,7 +28,7 @@ Welcome to **Fetch Dogs**, a web application that helps dog lovers find and adop
 ### 1️⃣ **Clone the Repository**
 
 ```sh
-git clone https://github.com/sriramreddy42@gmail.com/fetch-dogs.git
+git clone https://github.com/sriramreddy42/fetch-dogs.git
 cd fetch-dogs
 2️⃣ Install Dependencies
 sh
