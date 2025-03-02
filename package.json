@@ -8,8 +8,9 @@
     "dev": "vite",
     "build": "vite build",
     "predeploy": "npm run build",
-    "deploy": "gh-pages -d dist -r https://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@github.com/sriramreddy42/fetch-dogs.git"
+    "deploy": "gh-pages -d dist"
   },
+
   "dependencies": {
     "@emotion/react": "^11.14.0",
     "@emotion/styled": "^11.14.0",
